@@ -1,5 +1,5 @@
-# Use Python version 3.8.10 as the base image
-FROM python:3.8.10
+# Use Python version 3.9.10 as the base image
+FROM python:3.9.10
 
 # Define environment variables (we can do it here or in the docker-compose file)
 #ENV DB_URL=postgresql://user_name:password@host_name:port/db_name

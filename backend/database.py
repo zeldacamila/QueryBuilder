@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # Load environment variables
-DATABASE_URL = os.getenv('DB_URL')
+DATABASE_URL = os.environ.get('DB_URL')
 
 # Create a SQLAlchemy engine. We will later use this engine in other places.
 engine = create_engine(DATABASE_URL)
