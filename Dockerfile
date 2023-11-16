@@ -17,8 +17,8 @@ RUN pip install -r /backendapp/requirements.txt
 # Copy the rest of our project files (located in the backend folder) to the /backendapp directory in the image
 COPY backend .
 
-# Inform Docker that the application listens on port 9000
-EXPOSE 9000
+# Inform Docker that the application listens on port 8000
+EXPOSE 8000
 
 # Set the default command to run when the image starts
-CMD [ "uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=9000"]
+CMD [ "uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
