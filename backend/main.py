@@ -1,7 +1,6 @@
 #========== IMPORT LIBRARIES AND MODULES ==========
-
-from datetime import timedelta
 import os
+from datetime import timedelta
 from typing import List
 from fastapi import FastAPI, HTTPException, Depends, Response
 from models import Comment, Query, User, Base
@@ -10,16 +9,7 @@ from database import engine
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from dependencies import build_query, create_access_token, get_db, run_query, save_query_to_database
-from google.cloud import bigquery
-from google.oauth2 import service_account
-
-# Load the credeentials from service account file 
-credentials = service_account.Credentials.from_service_account_file(
-    'starry-center-383714-80a8265276ad.json'
-)
-# Create a BigQuery client
-client = bigquery.Client(credentials=credentials, project=credentials.project_id)
-
+from google.api_core.exceptions import BadRequest
 
 # Load environment variables
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
@@ -33,7 +23,7 @@ Base.metadata.create_all(bind=engine)
 #========== OPERATIONS ==========
 @app.get("/")
 async def root():
-    return {"message": f"Hello World"}
+    return {"message": f"Hello World. I'm a Query Builder developed by Maria Camila Recuero."}
 
 # CREATE AND LOGIN USER
 @app.post("/users")
@@ -61,66 +51,122 @@ async def create_user(user: UserCreate, response: Response, db: Session = Depend
         db.rollback()
         raise HTTPException(status_code=400, detail="Could not create user")
     
-
 # CREATE AND VISUALIZE QUERY
 @app.post("/submit_query/")
 async def submit_query(query_data: QueryData, db: Session = Depends(get_db)):
-    # Build the query
-    query_string = build_query(
-        country_name=query_data.country_name, 
-        year=query_data.year, 
-        sex=query_data.sex, 
-        indicator_name=query_data.indicator_name
-    )
-    #print(query_string)
-    # Set the query_string in query_data
-    query_data.sql_query = query_string
-    # Save the query info into the database
-    query_id = save_query_to_database(query_data=query_data, username=query_data.user_name, db=db)
+    # Verify if the user is registered in the database
+    user = db.query(User).filter(User.user_name == query_data.user_name).first()
+    if not user:
+        # Raise an HTTP exception if the user is not registered
+        raise HTTPException(status_code=400, detail="User not registered.")
     
-    query_results = run_query(query = query_string)
+    # Check if a query with the same name already exists
+    existing_query = db.query(Query).filter(Query.query_name == query_data.query_name).first()
+    if existing_query:
+        # Raise an HTTP exception if a query with the same name exists
+        raise HTTPException(status_code=400, detail="A query with this name already exists.")
+    
+    try:
+        # Build the SQL query string based on input data
+        query_string = build_query(
+            country_name=query_data.country_name,
+            year=query_data.year,
+            sex=query_data.sex,
+            indicator_name=query_data.indicator_name
+        )
+        # Set the SQL query string in query_data
+        query_data.sql_query = query_string
 
+        # Execute the query and get the results
+        query_results = run_query(query=query_string)
+        
+        # Save the query information into the database
+        query_id = save_query_to_database(query_data=query_data, username=query_data.user_name, db=db)
+
+    except BadRequest:
+        # Handle BadRequest exception for issues like an invalid query syntax
+        raise HTTPException(status_code=400, detail=f"Query execution error: invalid query")
+
+    except Exception as e:
+        # Handle any other type of error that might occur
+        raise HTTPException(status_code=500, detail=str(e))
+
+    # Return a successful response if no errors are encountered
     return {"message": "Query submitted successfully", "query_id": query_id, "query_results": query_results}
+
+# RUN QUERY
+@app.post("/run_query/")
+async def run_visualize_query(query_data: QueryData, db: Session = Depends(get_db)):
+    # Verify if the user is registered in the database
+    user = db.query(User).filter(User.user_name == query_data.user_name).first()
+    if not user:
+        # Raise an HTTP exception if the user is not registered
+        raise HTTPException(status_code=400, detail="User not registered.")
+    
+    try:
+        # Build the SQL query string based on input data
+        query_string = build_query(
+            country_name=query_data.country_name,
+            year=query_data.year,
+            sex=query_data.sex,
+            indicator_name=query_data.indicator_name
+        )
+        # Set the SQL query string in query_data
+        query_data.sql_query = query_string
+
+        # Execute the query and get the results
+        query_results = run_query(query=query_string)
+
+    except BadRequest:
+        # Handle BadRequest exception for issues like an invalid query syntax
+        raise HTTPException(status_code=400, detail=f"Query execution error: invalid query")
+
+    except Exception as e:
+        # Handle any other type of error that might occur
+        raise HTTPException(status_code=500, detail=str(e))
+
+    # Return a successful response if no errors are encountered
+    return {"message": "Query submitted successfully", "query_results": query_results}
 
 # SAVE QUERY
 @app.post("/save_query/")
 async def save_query(query_data: QueryData, db: Session = Depends(get_db)):
+    # Check if the user_name is registered in the database
+    user = db.query(User).filter(User.user_name == query_data.user_name).first()
+    if not user:
+        # Raise an HTTP exception if the user_name is not registered
+        raise HTTPException(status_code=400, detail="User not registered.")
+
     # Check if a query with the same name already exists
     existing_query = db.query(Query).filter(Query.query_name == query_data.query_name).first()
     if existing_query:
-        # Return an error response if a query with the same name exists
+        # Raise an HTTP exception if a query with the same name exists
         raise HTTPException(status_code=400, detail="A query with this name already exists.")
 
-    # Build the query string
-    query_string = build_query(
-        country_name=query_data.country_name, 
-        year=query_data.year, 
-        sex=query_data.sex, 
-        indicator_name=query_data.indicator_name
-    )
-    # Set the query_string in query_data
-    query_data.sql_query = query_string
+    try:
+        # Build the query string
+        query_string = build_query(
+            country_name=query_data.country_name, 
+            year=query_data.year, 
+            sex=query_data.sex, 
+            indicator_name=query_data.indicator_name
+        )
+        # Set the query_string in query_data
+        query_data.sql_query = query_string
 
-    # Save the query info into the database
-    query_id = save_query_to_database(query_data=query_data, username=query_data.user_name, db=db)
+        # Save the query info into the database
+        query_id = save_query_to_database(query_data=query_data, username=query_data.user_name, db=db)
+        
+    except HTTPException as http_exc:
+        # Raise the HTTP exceptions as they are
+        raise http_exc
 
+    except Exception as e:
+        # Handle any other type of error that might occur
+        raise HTTPException(status_code=500, detail=str(e))
+
+    # Returning a successful response if no errors are encountered
     return {"message": "Query saved successfully", "query_id": query_id}
-
-# RUN QUERY
-@app.post("/run_query/")
-async def run_query_endpoint(query_data: QueryData, db: Session = Depends(get_db)):
-    # Build the query string
-    query_string = build_query(
-        country_name=query_data.country_name, 
-        year=query_data.year, 
-        sex=query_data.sex, 
-        indicator_name=query_data.indicator_name
-    )
-
-    # Run the query and get results
-    query_results = run_query(query=query_string)
-
-    return {"message": "Query executed successfully", "query_results": query_results}
 
 # GET ALL SAVED QUERIES
 @app.get("/saved_queries/", response_model=List[QueryDisplay])
@@ -158,16 +204,31 @@ async def show_saved_queries(db: Session = Depends(get_db)):
 # CREATE COMMENT
 @app.post("/create_comment/", response_model=CommentCreate)
 async def create_comment(comment_data: CommentCreate, db: Session = Depends(get_db)):
-    # Create a new Comment object
-    new_comment = Comment(
-        owner_id=comment_data.owner_id,
-        query_id=comment_data.query_id,
-        comment_content=comment_data.comment_content
-    )
+    # Check if the user (owner_id) exists
+    user = db.query(User).filter(User.user_id == comment_data.owner_id).first()
+    if not user:
+        raise HTTPException(status_code=400, detail="User not registered.")
 
-    # Add the new comment to the database and commit the transaction
-    db.add(new_comment)
-    db.commit()
-    db.refresh(new_comment)
+    # Check if the query (query_id) exists
+    query = db.query(Query).filter(Query.query_id == comment_data.query_id).first()
+    if not query:
+        raise HTTPException(status_code=404, detail="Query not found with that id.")
 
-    return new_comment
+    try:
+        # Create a new Comment object
+        new_comment = Comment(
+            owner_id=comment_data.owner_id,
+            query_id=comment_data.query_id,
+            comment_content=comment_data.comment_content
+        )
+
+        # Add the new comment to the database and commit the transaction
+        db.add(new_comment)
+        db.commit()
+        db.refresh(new_comment)
+
+        return new_comment
+
+    except Exception as e:
+        # Handle any other error that might occur
+        raise HTTPException(status_code=500, detail=str(e))

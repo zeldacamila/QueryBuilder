@@ -1,4 +1,5 @@
 #========== IMPORT LIBRARIES AND MODULES ==========
+import json
 import os
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -9,14 +10,13 @@ from jose import jwt
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-
 # Load environment variables
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
+GOOGLE_APP_CREDENTIALS = json.loads(os.getenv('GOOGLE_APP_CREDENTIALS'))
+
 # Load the credeentials from service account file 
-credentials = service_account.Credentials.from_service_account_file(
-    'starry-center-383714-80a8265276ad.json'
-)
+credentials = service_account.Credentials.from_service_account_info(GOOGLE_APP_CREDENTIALS)
 # Create a BigQuery client
 client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
