@@ -74,7 +74,8 @@ def build_query(country_name, year, sex, indicator_name):
 
     where_clause = ' AND '.join(where_clauses) if where_clauses else '1=1'
 
-    query = f"""SELECT * FROM `bigquery-public-data.world_bank_intl_education.international_education`
+    query = f"""SELECT * FROM
+    `bigquery-public-data.world_bank_intl_education.international_education`
     WHERE {where_clause}
     LIMIT 1000;"""
 

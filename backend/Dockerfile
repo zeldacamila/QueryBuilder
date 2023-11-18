@@ -8,14 +8,14 @@ FROM python:3.9.10
 WORKDIR /backendapp
 
 # Copy the requirements file from our project to the Docker image
-COPY backend/requirements.txt /backendapp/requirements.txt
+COPY requirements.txt /backendapp/requirements.txt
 
 # Install the dependencies listed in the requirements file and upgrade pip to the latest version
 RUN pip install --upgrade pip
 RUN pip install -r /backendapp/requirements.txt
 
 # Copy the rest of our project files (located in the backend folder) to the /backendapp directory in the image
-COPY backend .
+COPY . /backendapp
 
 # Inform Docker that the application listens on port 8000
 EXPOSE 8000
