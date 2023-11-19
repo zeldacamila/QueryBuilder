@@ -1,0 +1,51 @@
+version: "3.9"
+# Define the services configuration
+services:
+  # FRONTEND SERVICE CONFIGURATION
+  frontend:
+    build:
+      context: ./frontend
+    # Map port 9000 of the container to port 9000 on the host
+    ports:
+      - 9000:9000
+    # Specify that the backend service depends on the postgres service
+    depends_on:
+      - backend
+  # BACKEND SERVICE CONFIGURATION
+  backend:
+    build: 
+      context: ./backend
+    # Starts a Uvicorn server for the 'app' defined in 'main', but only after ensuring that the PostgreSQL database is accessible.
+    command: bash -c "while !</dev/tcp/postgres/5432; do sleep 1; done; uvicorn main:app --reload --port=8000 --host=0.0.0.0"
+    # Provide the path to env file (if we use a .env file)
+    env_file:
+      - .env
+    # Sync the localhost machine with docker container (recommended for dev environment so the uvicorn server can listen the changes on our files)
+    volumes:
+      - .:/backend
+    # Map port 8000 of the container to port 8000 on the host
+    ports:
+      - 8000:8000
+    # Specify that the backend service depends on the postgres service
+    depends_on:
+      - postgres
+    # Restart the api container if the container stops
+    restart: always
+  # POSTGRES SERVICE CONFIGURATION
+  postgres:
+    image: postgres
+    # Provide the path to env file (if we use a .env file)
+    env_file:
+      - .env
+    # Mount a volume to persist PostgreSQL data
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    # Map port 5434 of the host to port 5432 of the container
+    ports:
+      - 5434:5432
+    expose:
+      - 5432
+
+# Define named volumes used by the services
+volumes:
+  pgdata:

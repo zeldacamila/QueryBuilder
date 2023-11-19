@@ -1,19 +1,25 @@
-//import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
-//import ProtectedRoute from './pages/ProtectedRoute';
 import QueryBuilder from './pages/QueryBuilder';
 import NotFound from './pages/NotFound';
+import RunQuery from './pages/RunQuery';
+import AllQueries from './pages/AllQueries';
 
 function App() {
-  //const [count, setCount] = useState(0)
+  
   return (
     <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route 
           path="/querybuilder" element={<QueryBuilder/>} 
+        />
+        <Route 
+          path="/querybuilder/run-query" element={<RunQuery/>} 
+        />
+        <Route 
+          path="/saved-queries" element={<AllQueries/>} 
         />
         <Route path="*" element={<NotFound />} />
       </Routes> 

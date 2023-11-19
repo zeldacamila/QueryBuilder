@@ -13,14 +13,14 @@ function Home() {
   return (
     <>
       <div className="login-form-container">
-        <h1>Welcome to the Query Builder</h1>
-        {showLoginForm ? <LoginForm /> : <SignInForm />}
+        <h2>Welcome to the QueryBuilder App ⚙️</h2>
+        {showLoginForm ? <SignInForm /> : <LoginForm />}
         <p className="form-toggle">
           {showLoginForm 
-            ? "Don't have an account? "
-            : "Already have an account? "}
+            ? "Already have an account? "
+            : "Don't have an account? "}
           <a href="#" onClick={toggleForm} className="link-text">
-          {showLoginForm ? "Sign up" : "Log in"}
+          {showLoginForm ? "Log In" : "Sign Up"}
           </a>
         </p>
       </div>

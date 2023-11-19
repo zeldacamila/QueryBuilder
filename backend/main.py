@@ -128,7 +128,7 @@ async def submit_query(query_data: QueryData, db: Session = Depends(get_db)):
     return {"message": "Query submitted successfully", "query_id": query_id, "query_results": query_results}
 
 # RUN QUERY 
-@app.get("/run_query/")
+@app.post("/run_query/")
 async def run_visualize_query(query_data: QueryData, db: Session = Depends(get_db)):
     # Verify if the user is registered in the database
     user = db.query(User).filter(User.user_name == query_data.user_name).first()
@@ -159,7 +159,7 @@ async def run_visualize_query(query_data: QueryData, db: Session = Depends(get_d
         raise HTTPException(status_code=500, detail=str(e))
 
     # Return a successful response if no errors are encountered
-    return {"message": "Query submitted successfully", "query_results": query_results}
+    return {"message": "Query runed successfully", "query_results": query_results}
 
 # SAVE QUERY
 @app.post("/save_query/")
@@ -186,14 +186,15 @@ async def save_query(query_data: QueryData, db: Session = Depends(get_db)):
         )
         # Set the query_string in query_data
         query_data.sql_query = query_string
-
+        # Execute the query and get the results
+        query_results = run_query(query=query_string)
         # Save the query info into the database
         query_id = save_query_to_database(query_data=query_data, username=query_data.user_name, db=db)
         
     except HTTPException as http_exc:
         # Raise the HTTP exceptions as they are
         raise http_exc
-
+    
     except Exception as e:
         # Handle any other type of error that might occur
         raise HTTPException(status_code=500, detail=str(e))

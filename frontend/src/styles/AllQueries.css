@@ -1,0 +1,23 @@
+body {
+  background: linear-gradient(135deg, #162747 0%, #1e2e3b 100%);
+  color: #ffffff;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.allqueries-container {
+  max-width: 800px;
+  margin: 100px auto 0 auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #2b455c;
+  border-radius: 10px;
+  background-color: #4a58674f;
+}

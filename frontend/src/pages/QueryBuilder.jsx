@@ -1,59 +1,64 @@
 import { useState, useEffect } from 'react';
-import { Button } from 'antd';
-import { jwtDecode } from "jwt-decode";
+import { Button, Radio } from 'antd';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
+import HeaderContainer from '../components/Header';
+import './QueryBuilder.css'
 
 function QueryBuilder() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
   const navigate = useNavigate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cookies = new Cookies();
-
+  
   useEffect(() => {
     const token = cookies.get('jwt_authorization');
     if (token) {
-      setIsLoggedIn(true);
-      const decoded = jwtDecode(token);
-      setUserName(decoded.sub);
+      setIsLoggedIn(true)
     }
-  }, []);
-
-  
-  const handleLogout = () => {
-    cookies.remove('jwt_authorization', { path: '/' });
-    setIsLoggedIn(false);
-    setUserName('');
-  };
+  }, [cookies]);
 
   const handleLogin = () => {
     navigate('/');
   };
 
+  const handleRadioChange = e => {
+    setSelectedOption(e.target.value);
+  };
+
+  const handleButtonClick = () => {
+    if (selectedOption === 'runAndSave') {
+      navigate('/querybuilder/run-query');
+    } else if (selectedOption === 'showSaved') {
+      navigate('/saved-queries');
+    }
+  };
+
   return (
+
     <>
-      <div className="query-builder-container">
-        {isLoggedIn ? (
-          <>
-            <h1>Create your query and visualize it</h1>
-            <p>Welcome, {userName}</p> 
-            <Button type="primary" htmlType="submit" className="query-builder-button">
-              Run query
+      <HeaderContainer />
+      {isLoggedIn ? (
+          <div className="query-builder-container">
+            <h2>What do you want to do?</h2>
+            <Radio.Group onChange={handleRadioChange} value={selectedOption} className="radio-group">
+              <Radio value="runAndSave">Run a query and save it.</Radio>
+              <Radio value="showSaved">Show all saved queries.</Radio>
+            </Radio.Group>
+            <Button type="primary" onClick={handleButtonClick}>
+              Go
             </Button>
-            <Button type="default" onClick={handleLogout} className="query-builder-button">
-              Logout
-            </Button>
-          </>
+          </div>
         ) : (
-            <>
-              <h1>Please log in to access to the Query Builder</h1>
-              <Button type="primary" onClick={handleLogin} className="query-builder-button">
-                Log in
-              </Button>
-            </>
+          <div className="query-builder-container">
+            <h2>Please log in to access to the QueryBuilder App</h2>
+            <Button type="primary" onClick={handleLogin}>
+              Log In
+            </Button>
+          </div>
         )}
-      </div>
-    </>
+      </>
   )
 }
 

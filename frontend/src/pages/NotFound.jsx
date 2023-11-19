@@ -5,7 +5,7 @@ import './NotFound.css'
 const NotFound = () => {
   const navigate = useNavigate()
   const handleBackHome = () => {
-    navigate('/')
+    navigate(-1)
   };
 
   return (
@@ -14,7 +14,7 @@ const NotFound = () => {
       status="404"
       title="404"
       subTitle="Sorry, the page you visited does not exist."
-      extra={<Button type="primary" onClick={handleBackHome}>Back Home</Button>}
+      extra={<Button type="primary" onClick={handleBackHome}>Back</Button>}
     />
   );
 }
