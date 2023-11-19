@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderContainer from '../components/Header';
 import QueriesTable from '../components/QueriesTable';
-import './AllQueries.css'
+import '../styles/AllQueries.css'
 
 
 const AllQueries = () => {

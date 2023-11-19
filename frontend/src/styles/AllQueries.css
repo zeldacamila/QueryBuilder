@@ -7,16 +7,17 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
+  align-items: top;
   text-align: center;
 }
 
 .allqueries-container {
-  max-width: 800px;
+  width: 950px;
   margin: 100px auto 0 auto;
-  padding: 25px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: top;
   border: 2px solid #2b455c;
   border-radius: 10px;
   background-color: #4a58674f;

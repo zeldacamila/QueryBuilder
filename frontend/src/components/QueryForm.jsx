@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { Button, Form, Input, Select, Modal } from 'antd';
-import './QueryForm.css';
-import api from '../api';
 import { jwtDecode } from "jwt-decode";
 import Cookies from 'universal-cookie';
+import api from '../api';
+import '../styles/QueryForm.css';
 
 const options = [
   "Enrolment in lower secondary education, (number)",

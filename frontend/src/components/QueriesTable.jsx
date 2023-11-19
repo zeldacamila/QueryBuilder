@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Table, Space, Button, Collapse } from 'antd';
 import api from '../api';
+import '../styles/QueriesTable.css'
 
 const QueriesTable = () => {
   const [data, setData] = useState([]);
@@ -69,7 +70,7 @@ const QueriesTable = () => {
   ];
 
   return (
-    <Table columns={columns} dataSource={data} />
+    <Table columns={columns} dataSource={data} pagination={{position: ['bottomRight', 'topRight']}} />
   );
 };
 

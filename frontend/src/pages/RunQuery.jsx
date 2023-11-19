@@ -1,7 +1,7 @@
 import HeaderContainer from '../components/Header';
 import QueryForm from '../components/QueryForm';
-import '../components/Header.css'
-import '../pages/RunQuery.css'
+import '../styles/Header.css'
+import '../styles/RunQuery.css'
 
 const RunQuery = () => {
 

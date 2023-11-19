@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import { jwtDecode } from "jwt-decode";
 import Cookies from 'universal-cookie';
-import { useNavigate } from 'react-router-dom';
-import './Header.css'
+import '../styles/Header.css'
 
 const HeaderContainer = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

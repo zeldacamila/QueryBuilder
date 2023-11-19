@@ -3,7 +3,7 @@ import { Button, Radio } from 'antd';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 import HeaderContainer from '../components/Header';
-import './QueryBuilder.css'
+import '../styles/QueryBuilder.css'
 
 function QueryBuilder() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

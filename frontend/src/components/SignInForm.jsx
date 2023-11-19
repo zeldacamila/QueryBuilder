@@ -1,10 +1,10 @@
-import { UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Modal } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api';
+import { UserOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Modal } from 'antd';
 import { jwtDecode } from "jwt-decode";
 import Cookies from 'universal-cookie';
+import api from '../api';
 
 const SignInForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
