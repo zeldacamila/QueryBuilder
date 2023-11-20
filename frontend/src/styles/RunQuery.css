@@ -11,14 +11,14 @@ body {
   justify-content: space-between;
   gap: 15px;
   align-items: top;
-  max-width: 1280px;
+  max-width: 1300px;
   height: 1100px;
   margin: 0 auto;
   padding: 0px;
 }
 .form-container {
   max-width: 500px;
-  max-height: 700px;
+  max-height: 800px;
   margin: 100px auto 0 auto;
   padding: 10px;
   display: flex;
@@ -30,7 +30,7 @@ body {
 }
 .graphs-container {
   width: 700px;
-  height: 900px;
+  height: 800px;
   margin: 100px auto 0 auto;
   padding: 10px;
   display: flex;
@@ -52,5 +52,5 @@ body {
 
 .ant-form-item-label>label {
   color: #ffffff !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
 }

@@ -1,12 +1,12 @@
-import HeaderContainer from '../components/Header';
-import BarChart from '../components/BarChart';
-import '../styles/Header.css';
-import '../styles/RunQuery.css';
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Select, Modal } from 'antd';
 import { jwtDecode } from "jwt-decode";
 import Cookies from 'universal-cookie';
 import api from '../api';
+import HeaderContainer from '../components/Header';
+import Chart from '../components/Chart';
+import '../styles/Header.css';
+import '../styles/RunQuery.css';
 
 const options = [
   "Enrolment in lower secondary education, (number)",
@@ -48,10 +48,10 @@ const countries = [
 const { Option } = Select;
 const layout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16},
+  wrapperCol: { span: 18},
 };
 const tailLayout = {
-  wrapperCol: { offset: 6, span: 16 },
+  wrapperCol: { offset: 6, span: 18 },
 };
 
 const RunQuery = () => {
@@ -96,6 +96,7 @@ const RunQuery = () => {
         const extractedValues = queryResults.map(item => item.value);
         setLabels(extractedLabels);
         setValues(extractedValues);
+        console.log(extractedValues)
       } else {
         setQueryData('No information registered in the table');
         setLabels([]);
@@ -133,7 +134,6 @@ const RunQuery = () => {
       setIsModalOpen(true);
     }
   }
-
   const handleLogin = () => {
     navigate('/');
   };
@@ -248,9 +248,8 @@ const RunQuery = () => {
                   {queryData === 'No information registered in the table' ? (
                     <div>{queryData}</div>
                   ) : (
-                    <div>
-                        
-                      <BarChart labels={labels} values={values} />
+                      <div style={{ width: '600px', height: '400px' }}>
+                      <Chart labels={labels} values={values} />    
                     </div>
                   )}
                 </>
