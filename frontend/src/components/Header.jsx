@@ -26,6 +26,7 @@ const HeaderContainer = () => {
     };
   const handleLogout = () => {
     cookies.remove('jwt_authorization', { path: '/' });
+     cookies.remove('jwt_authorization', { path: '/querybuilder' });
     setIsLoggedIn(false);
     setUserName('');
     navigate('/');

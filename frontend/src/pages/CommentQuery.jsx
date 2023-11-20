@@ -25,7 +25,7 @@ const CommentQuery = () => {
   useEffect(() => {
     const token = cookies.get('jwt_authorization');
     if (token) {
-      setIsLoggedIn(true)
+      setIsLoggedIn(true);
       const decoded = jwtDecode(token);
       setUserName(decoded.sub);
       fetchUserId(decoded.sub);
@@ -79,7 +79,7 @@ const CommentQuery = () => {
       {isLoggedIn ? (
         <div className="comment-query-container">
           <h2>Write a comment to the selected query</h2>
-                    <Form
+          <Form
             ref={formRef}
             name="normal_login"
             className="comment-form"

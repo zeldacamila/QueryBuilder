@@ -63,8 +63,9 @@ const QueriesTable = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <Button>Select</Button>
-    
+          <Link to={`/saved-queries/${record.query_id}/select-query`}>
+            <Button>Select</Button>
+          </Link>
           <Link to={`/saved-queries/${record.query_id}/comment-query`}>
             <Button>Comment</Button>
           </Link>

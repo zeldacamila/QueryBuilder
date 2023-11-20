@@ -1,4 +1,4 @@
-import './BarChart.css';
+import '../styles/BarChart.css';
 
 const BarChart = ({ labels, values }) => {
   const maxValue = Math.max(...values);

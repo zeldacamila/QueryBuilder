@@ -1,7 +1,8 @@
+import { useParams, useNavigate } from 'react-router-dom';
 import HeaderContainer from '../components/Header';
 import BarChart from '../components/BarChart';
 import '../styles/Header.css';
-import '../styles/RunQuery.css';
+import '../styles/SelectQuery.css';
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Select, Modal } from 'antd';
 import { jwtDecode } from "jwt-decode";
@@ -54,7 +55,9 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
-const RunQuery = () => {
+const SelectQuery = () => {
+  const { queryId } = useParams();
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -64,16 +67,41 @@ const RunQuery = () => {
   const cookies = new Cookies();
   const [queryInfo, setQueryInfo] = useState();
   const [queryData, setQueryData] = useState();
+  const [queryDetails, setQueryDetails] = useState();
   const [labels, setLabels] = useState([]);
   const [values, setValues] = useState([]);
-  
+ 
   useEffect(() => {
     const token = cookies.get('jwt_authorization');
     if (token) {
-      setIsLoggedIn(true)
+      setIsLoggedIn(true);
+      fetchQueryDetails();
     }
-  }, [cookies]);
-
+    
+  }, []);
+  useEffect(() => {
+    if (queryDetails && formRef.current) {
+      formRef.current.setFieldsValue({
+        queryname: queryDetails.query_name,
+        country: queryDetails.country_param,
+        indicatorName: queryDetails.indicator_param,
+        gender: queryDetails.sex_param,
+        year: queryDetails.year_param,
+      });
+    }
+  }, [queryDetails]);
+  const handleLogin = () => {
+    navigate('/');
+  };
+  const fetchQueryDetails = async () => {
+    try {
+      const response = await api.get(`/saved_queries/${queryId}`);
+      setQueryDetails(response.data);
+      console.log(response.data, 'response.data')
+    } catch (error) {
+      console.error('Error occurred fetching query details:', error);
+    }
+  };
   const onFinish = async (values) => {
     try {
       const token = cookies.get('jwt_authorization');
@@ -106,7 +134,10 @@ const RunQuery = () => {
     }
   }
   const onReset = () => {
-    formRef.current?.resetFields();
+    if (queryDetails && formRef.current) {
+      formRef.current.resetFields();
+    }
+    formRef.current.resetFields();
     setQueryData(null)
     setQueryInfo(null)
   }
@@ -134,10 +165,6 @@ const RunQuery = () => {
     }
   }
 
-  const handleLogin = () => {
-    navigate('/');
-  };
-
   return (
     <>
       <HeaderContainer />
@@ -146,7 +173,7 @@ const RunQuery = () => {
           <div className="form-container">
             <h2>Build your query</h2>
             <h3>Please, enter a query name and select the filters to build a SQL query</h3>
-            <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish} style={{ width: 500 }} >
+            <Form {...layout} ref={formRef} name="control-ref" onFinish={onFinish} style={{ width: 500 }}>
               <Form.Item
                 name="queryname"
                 label="Query name"
@@ -249,7 +276,6 @@ const RunQuery = () => {
                     <div>{queryData}</div>
                   ) : (
                     <div>
-                        
                       <BarChart labels={labels} values={values} />
                     </div>
                   )}
@@ -259,14 +285,15 @@ const RunQuery = () => {
           </div>
         </div>
       ) : (
-        <div className="query-builder-container">
-          <h2>Please log in to access to the QueryBuilder App</h2>
-          <Button type="primary" onClick={handleLogin}>
-            Log In
-          </Button>
-        </div>
+          <div className="query-builder-container">
+            <h2>Please log in to access to the QueryBuilder App</h2>
+            <Button type="primary" onClick={handleLogin}>
+              Log In
+            </Button>
+          </div>
       )}
     </>
   );
-}
-export default RunQuery;
+};
+
+export default SelectQuery;
