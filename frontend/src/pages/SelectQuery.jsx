@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import HeaderContainer from '../components/Header';
-import BarChart from '../components/BarChart';
+import Chart from '../components/Chart';
 import '../styles/Header.css';
 import '../styles/SelectQuery.css';
 import React, { useState, useEffect } from 'react';
@@ -49,10 +49,10 @@ const countries = [
 const { Option } = Select;
 const layout = {
   labelCol: { span: 6 },
-  wrapperCol: { span: 16},
+  wrapperCol: { span: 18},
 };
 const tailLayout = {
-  wrapperCol: { offset: 6, span: 16 },
+  wrapperCol: { offset: 6, span: 18 },
 };
 
 const SelectQuery = () => {
@@ -275,8 +275,8 @@ const SelectQuery = () => {
                   {queryData === 'No information registered in the table' ? (
                     <div>{queryData}</div>
                   ) : (
-                    <div>
-                      <BarChart labels={labels} values={values} />
+                      <div style={{ width: '600px', height: '400px' }}>
+                      <Chart labels={labels} values={values} />
                     </div>
                   )}
                 </>
