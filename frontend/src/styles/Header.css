@@ -1,0 +1,16 @@
+.header-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-logout-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

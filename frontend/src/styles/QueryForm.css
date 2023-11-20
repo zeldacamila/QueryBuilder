@@ -1,0 +1,11 @@
+.run-button {
+  margin-right: 8px;
+}
+.save-button {
+  margin-right: 8px;
+}
+.ant-form-item-label>label {
+  color: #ffffff !important;
+  font-size: 16px !important;
+}
+

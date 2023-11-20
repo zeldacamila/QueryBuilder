@@ -1,0 +1,19 @@
+.ant-pagination-item,
+.ant-pagination-item-link,
+.ant-pagination-item-1,
+.ant-pagination-item-2 {
+  
+  font-weight: bold !important;
+  font-size: 14px;
+  text-decoration: none !important;
+  background-color: white !important;
+  border-color: #1d2d3c !important;
+
+  &:hover {
+    border-color: white !important;
+  }
+}
+.ant-pagination-item-active {
+  border-color: white !important;
+  background-color: #1d2d3d !important;
+}

@@ -1,0 +1,44 @@
+/* BarChart.css */
+.chart-wrap {
+  width: 650px;
+  height: 600px;
+  font-family: sans-serif;
+}
+
+.title {
+  text-align: center;
+}
+
+.grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-bottom: 2px solid #aaa;
+  background: repeating-linear-gradient(0deg, transparent, transparent 19.5%, rgba(170, 170, 170, 0.3) 20%);
+}
+
+.bar {
+  background-color: #F16335;
+  width: 45px;
+  height: var(--bar-value);
+  align-self: flex-end;
+  margin: 0 auto;
+  border-radius: 3px 3px 0 0;
+  position: relative;
+}
+
+.bar:hover {
+  opacity: 0.7;
+}
+
+.bar::after {
+  content: attr(data-name);
+  top: -3em;
+  padding: 10px;
+  display: inline-block;
+  white-space: nowrap;
+  position: absolute;
+  transform: rotate(-20deg);
+}

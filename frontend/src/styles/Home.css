@@ -1,0 +1,34 @@
+body {
+  background: linear-gradient(135deg, #162747 0%, #1e2e3b 100%);
+  color: #ffffff;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.login-form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border: 2px solid #2b455c;
+  border-radius: 10px;
+  background-color: #4a58674f
+}
+
+.link-text {
+  color: #1677ff;
+  text-decoration: none;
+}
+.link-text :hover {
+  color: #5d8ed3;
+  text-decoration: none;
+}
