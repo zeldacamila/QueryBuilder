@@ -36,7 +36,6 @@ function QueryBuilder() {
   };
 
   return (
-
     <>
       <HeaderContainer />
       {isLoggedIn ? (
@@ -58,7 +57,7 @@ function QueryBuilder() {
             </Button>
           </div>
         )}
-      </>
+    </>
   )
 }
 

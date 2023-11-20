@@ -21,8 +21,8 @@ services:
     env_file:
       - .env
     # Sync the localhost machine with docker container (recommended for dev environment so the uvicorn server can listen the changes on our files)
-    volumes:
-      - .:/backend
+    #volumes:
+    #  - .:/backend
     # Map port 8000 of the container to port 8000 on the host
     ports:
       - 8000:8000

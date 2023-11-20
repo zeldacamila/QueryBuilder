@@ -77,7 +77,7 @@ def build_query(country_name, year, sex, indicator_name):
     query = f"""SELECT * FROM
     `bigquery-public-data.world_bank_intl_education.international_education`
     WHERE {where_clause}
-    LIMIT 1000;"""
+    LIMIT 10;"""
 
     return query
 

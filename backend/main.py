@@ -84,6 +84,15 @@ async def create_user(user: UserCreate, response: Response, db: Session = Depend
         db.rollback()
         raise HTTPException(status_code=400, detail="Could not create user")
     
+# GET USER ID BY USERNAME
+@app.post("/get_user_id")
+async def get_user_id(user: UserCreate, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.user_name == user.user_name).first()
+    if db_user:
+        return {"user_id": db_user.user_id}
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+    
 # CREATE AND VISUALIZE QUERY
 @app.post("/submit_query/")
 async def submit_query(query_data: QueryData, db: Session = Depends(get_db)):
@@ -235,6 +244,43 @@ async def show_saved_queries(db: Session = Depends(get_db)):
 
     return results
 
+# GET A SAVED QUERY BY ID
+@app.get("/saved_queries/{query_id}", response_model=QueryDisplay)
+async def show_saved_query(query_id: int, db: Session = Depends(get_db)):
+    # Obtener la consulta específica por ID
+    query_result = db.query(Query, User.user_name)\
+                     .join(User, Query.owner_id == User.user_id)\
+                     .filter(Query.query_id == query_id)\
+                     .first()
+
+    # Si la consulta no existe, devuelve un error 404
+    if not query_result:
+        raise HTTPException(status_code=404, detail=f"Query with id {query_id} not found")
+
+    query, user_name = query_result
+
+    # Obtener los comentarios relacionados con la consulta
+    comment_results = db.query(Comment, User.user_name)\
+                        .join(User, Comment.owner_id == User.user_id)\
+                        .filter(Comment.query_id == query.query_id)\
+                        .limit(3)\
+                        .all()
+
+    # Construir la lista de comentarios
+    comments = [{"owner_name": comment_user_name, "comment_content": comment.comment_content} for comment, comment_user_name in comment_results]
+
+    return QueryDisplay(
+        query_id=query.query_id,
+        query_name=query.query_name,
+        query_creator=user_name,
+        country_param=query.country_param,
+        indicator_param=query.indicator_param,
+        sex_param=query.sex_param,
+        year_param=query.year_param,
+        sql_query=query.sql_query,
+        comments=comments
+    )
+    
 # CREATE COMMENT
 @app.post("/create_comment/", response_model=CommentCreate)
 async def create_comment(comment_data: CommentCreate, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Button, Form, Input, Select, Modal } from 'antd';
 import { jwtDecode } from "jwt-decode";
 import Cookies from 'universal-cookie';
@@ -11,8 +11,12 @@ const options = [
   "Repeaters in primary education, all grades, (number)",
   "Teachers in lower secondary education, (number)",
   "Enrolment in early childhood education, (number)",
-  // ... (continúa agregando el resto de tus opciones)
-  "ALL"
+  "Percentage of students in lower secondary education who are (%)",
+  "Percentage of students in upper secondary education who are (%)",
+  "New entrants to Grade 1 of primary education, percentage (%)",
+  "Percentage of teachers in lower secondary education who are (%)",
+  "Net enrolment rate, lower secondary, (%)",
+  "Net enrolment rate, upper secondary, (%)",
 ].sort();
 const years = [
   '1970', '1971', '1972', '1973', '1974', '1975', '1976', '1977',
@@ -41,6 +45,8 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
+
+
 const QueryForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -63,10 +69,9 @@ const QueryForm = () => {
         country_name: values.country,
         user_name: userName
       };
-      console.log(requestBody, 'requestbody')
+      
       const response = await api.post('/run_query', requestBody);
       console.log(response.data);
-      
     } catch (error) {
       
       console.error('Error al enviar la consulta:', error);

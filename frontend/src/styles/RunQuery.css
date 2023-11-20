@@ -9,15 +9,16 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  gap: 15px;
   align-items: top;
   max-width: 1280px;
-  height: 800px;
+  height: 1100px;
   margin: 0 auto;
   padding: 0px;
 }
 .form-container {
   max-width: 500px;
-  max-height: 500px;
+  max-height: 700px;
   margin: 100px auto 0 auto;
   padding: 10px;
   display: flex;
@@ -28,15 +29,28 @@ body {
   background-color: #4a58674f;
 }
 .graphs-container {
-  max-width: 700px;
-  height: 700px;
+  width: 700px;
+  height: 900px;
   margin: 100px auto 0 auto;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
   border: 2px solid #2b455c;
   border-radius: 10px;
   background-color: #4a58674f;
 }
 
+.run-button {
+  margin-right: 8px;
+}
+
+.save-button {
+  margin-right: 8px;
+}
+
+.ant-form-item-label>label {
+  color: #ffffff !important;
+  font-size: 16px !important;
+}

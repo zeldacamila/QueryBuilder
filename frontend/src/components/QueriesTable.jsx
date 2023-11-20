@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Table, Space, Button, Collapse } from 'antd';
 import api from '../api';
 import '../styles/QueriesTable.css'
+import { Link } from 'react-router-dom';
 
 const QueriesTable = () => {
   const [data, setData] = useState([]);
@@ -60,10 +61,13 @@ const QueriesTable = () => {
     {
       title: 'Action',
       key: 'action',
-      render: () => (
+      render: (text, record) => (
         <Space size="middle">
           <Button>Select</Button>
-          <Button>Comment</Button>
+    
+          <Link to={`/saved-queries/${record.query_id}/comment-query`}>
+            <Button>Comment</Button>
+          </Link>
         </Space>
       ),
     },

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import '../styles/Home.css';
 import SignInForm from '../components/SignInForm';
-import LoginForm from '../components/LoginForm'; // Asegúrate de importar LoginForm
+import LoginForm from '../components/LoginForm';
+import '../styles/Home.css';
 
 function Home() {
   const [showLoginForm, setShowLoginForm] = useState(false);

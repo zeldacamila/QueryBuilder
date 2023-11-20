@@ -23,3 +23,12 @@ body {
   border-radius: 10px;
   background-color: #4a58674f
 }
+
+.link-text {
+  color: #1677ff;
+  text-decoration: none;
+}
+.link-text :hover {
+  color: #5d8ed3;
+  text-decoration: none;
+}

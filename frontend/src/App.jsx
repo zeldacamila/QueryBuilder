@@ -4,7 +4,9 @@ import QueryBuilder from './pages/QueryBuilder';
 import NotFound from './pages/NotFound';
 import RunQuery from './pages/RunQuery';
 import AllQueries from './pages/AllQueries';
+import CommentQuery from './pages/CommentQuery';
 import './styles/App.css';
+
 
 function App() {
   
@@ -15,6 +17,7 @@ function App() {
         <Route path="/querybuilder" element={<QueryBuilder />} />
         <Route path="/querybuilder/run-query" element={<RunQuery />} />
         <Route path="/saved-queries" element={<AllQueries />} />
+        <Route path="/saved-queries/:queryId/comment-query" element={<CommentQuery />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
