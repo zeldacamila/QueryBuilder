@@ -17,11 +17,11 @@ A tool focused on crafting and managing queries in BigQuery (v0.1.0).
 Copy the `.env` file into the root directory of the project.
 
 3. **Build and Run the Application**
-Navigate to the project directory and run: docker compose up --build
+From a bash terminal, navigate to the project directory and run: ./activate.sh
 
 
 4. **Access the Application**
-Open your web browser and visit `localhost:9000` to see the application running.
+Open your web browser and visit `http://localhost:9000` to see the application running.
 
 5. **API Documentation**
 To view the API documentation, visit `http://localhost:8000/docs#/`.
