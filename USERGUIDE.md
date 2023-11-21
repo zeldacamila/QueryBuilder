@@ -46,6 +46,8 @@ To access the application, you need to log in using your user credentials. Upon 
   - **Comment on a Query**: Select a query to add comments. This is useful for collaborative query building and review.
 
 
+You can check this video where I setup the app.
+https://www.youtube.com/watch?v=y9bbgidpY-M&ab_channel=MariaCamilaR
 
 Thank you for using QueryBuilder!
 
